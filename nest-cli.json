@@ -1,0 +1,15 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "monorepo": true,
+  "generateOptions": {
+    "spec": {
+      "service": false,
+      "s": false,
+      "controller": false,
+      "co": false,
+      "resource": false,
+      "res": false
+    }
+  }
+}

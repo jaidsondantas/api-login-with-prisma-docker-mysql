@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model seeds {
+  id  String @id @default(cuid())
+  key String
+}
+
+model users {
+  id              String   @id @default(cuid())
+  name            String
+  email           String   @unique
+  password        String
+  salt            String?
+  forms           forms[]  @relation("FK_4f8d5a26db26d408832a56063d7")
+  createdAt       DateTime @default(now()) @map("created_at") @db.DateTime(6)
+  updatedAt       DateTime @default(now()) @map("updated_at") @db.DateTime(6)
+  createdByForms  forms[]  @relation("FK_9d51c393dea8ee5d2751b50038a")
+  updatedByForms  forms[]  @relation("FK_14969c51cd0f01181741dac9b4c")
+  createdByFields fields[] @relation("FK_aa438465ce4e6b8ef30b95e11d1")
+  updatedByFields fields[] @relation("FK_9673cf800f75cc16584b747c0dc")
+  chats           chats[]  @relation("FK_cf8ff73c1f120600c1ab6a74b7b")
+}
+
+model forms {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  clientId    String   @map("client")
+  client      users?   @relation("FK_4f8d5a26db26d408832a56063d7", fields: [clientId], references: [id])
+  createdById String?  @map("created_by")
+  createdBy   users?   @relation("FK_9d51c393dea8ee5d2751b50038a", fields: [createdById], references: [id])
+  updatedById String?  @map("updated_by")
+  updatedBy   users?   @relation("FK_14969c51cd0f01181741dac9b4c", fields: [updatedById], references: [id])
+  createdAt   DateTime @default(now()) @map("created_at") @db.DateTime(6)
+  updatedAt   DateTime @default(now()) @map("updated_at") @db.DateTime(6)
+  fields      fields[] @relation("FK_f5f2c68138a8dabd583066aa8da")
+  chats       chats[]  @relation("FK_56621b0f60ecc064d60ed43aba1")
+}
+
+model field_types {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.DateTime(6)
+  fields    fields[] @relation("FK_e29dd7c3fea26bc250df4e575dd")
+}
+
+model fields {
+  id          String      @id @default(cuid())
+  name        String
+  question    String
+  required    Boolean
+  fieldTypeId String      @map("field_type")
+  fieldType   field_types @relation("FK_e29dd7c3fea26bc250df4e575dd", fields: [fieldTypeId], references: [id])
+  formId      String      @map("form")
+  form        forms       @relation("FK_f5f2c68138a8dabd583066aa8da", fields: [formId], references: [id])
+  createdById String?      @map("created_by")
+  createdBy   users?      @relation("FK_aa438465ce4e6b8ef30b95e11d1", fields: [createdById], references: [id])
+  updatedById String?      @map("updated_by")
+  updatedBy   users?      @relation("FK_9673cf800f75cc16584b747c0dc", fields: [updatedById], references: [id])
+  createdAt   DateTime    @default(now()) @map("created_at") @db.DateTime(6)
+  updatedAt   DateTime    @default(now()) @map("updated_at") @db.DateTime(6)
+}
+
+model chats {
+  id        String   @id @default(cuid())
+  name      String
+  status    Boolean
+  formId    String   @map("form")
+  form      forms    @relation("FK_56621b0f60ecc064d60ed43aba1", fields: [formId], references: [id])
+  clientId  String   @map("client")
+  client    users?   @relation("FK_cf8ff73c1f120600c1ab6a74b7b", fields: [clientId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at") @db.DateTime(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.DateTime(6)
+}

@@ -1,0 +1,48 @@
+version: '3'
+services:
+  api-nix-chat-form-dev:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+      args:
+        - NODE_ENV=development
+    working_dir: /home/api-nix-chat-form
+    image: api-nix-chat-form:latest
+    container_name: api-nix-chat-form
+    restart: 'no'
+    ports:
+      - 3100:3100
+    volumes:
+      - .://home/api-nix-chat-form
+      - /usr/src/app/node_modules
+
+    command: [ "/bin/bash", "-c", "npm install && npx prisma generate && npm run dev" ]
+    depends_on:
+      - mysql
+  api-nix-chat-form-prod:
+    build:
+      context: .
+      dockerfile: ./docker/prod/Dockerfile
+      args:
+        - NODE_ENV=development
+    working_dir: /home/api-nix-chat-form
+    image: api-nix-chat-form:latest
+    container_name: api-nix-chat-form
+    restart: 'no'
+    ports:
+      - 3100:3100
+    volumes:
+      - .://home/api-nix-chat-form
+      - /usr/src/app/node_modules
+
+    command: [ "/bin/bash", "-c", "npm install && npx prisma generate && npm run build && npm run start:prod" ]
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nixChatForm
+    ports:
+      - "3306:3306"

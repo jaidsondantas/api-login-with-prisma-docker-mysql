@@ -14,11 +14,10 @@ export class UserSeeder implements Seeder {
   }
 
   async seed(): Promise<any> {
-    console.log('aqui')
     if (!await this.prisma.seeds.count({where: {key: 'UserSeeder'}})) {
       const _user: CreateUserDto = {
-        name: 'Jaidson Dantas',
-        email: 'jaidsondantas@gmail.com',
+        name: 'Usuário Teste',
+        email: 'usuarioteste@gmail.com',
         password: '123',
       }
 

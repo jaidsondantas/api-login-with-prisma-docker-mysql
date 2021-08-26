@@ -9,15 +9,15 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('Nix Chat Form')
-    .setDescription('The Nix Chat Form API description')
+    .setTitle('Login With Prisma + Docker')
+    .setDescription('Login With Prisma + Docker description')
     .setVersion('1.0')
     .addBearerAuth({type: undefined, scheme: '{{token}}'})
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
+  await app.listen(4000);
 }
 
 bootstrap();

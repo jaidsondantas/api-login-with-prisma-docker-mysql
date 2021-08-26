@@ -8,10 +8,9 @@ export const typeOrmOptions: TypeOrmModuleOptions = {
   port: 3306,
   username: 'root',
   password: 'root',
-  database: 'devChatForm',
+  database: 'dev',
   entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: false,
-
 }
 
 export const commonColumnsIds: TableColumnOptions[] = [

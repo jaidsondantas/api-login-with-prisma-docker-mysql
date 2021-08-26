@@ -50,7 +50,6 @@ export class UsersService {
   }
 
   async prepare(user: CreateUserDto | UpdateUserDto): Promise<Promise<Prisma.usersUncheckedCreateInput> | Promise<any>> {
-
     const saltOrRounds = 10;
     const _user: Prisma.usersCreateInput = {
       name: user.name,

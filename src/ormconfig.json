@@ -5,7 +5,7 @@
   "port": 3306,
   "username": "root",
   "password": "root",
-  "database": "devChatForm",
+  "database": "dev",
   "entities": ["dist/**/*.entity{.ts,.js}"],
   "migrations": ["./src/database/migrations/*.ts"],
   "cli": {
